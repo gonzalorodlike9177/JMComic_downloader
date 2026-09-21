@@ -19,7 +19,11 @@ package.domain = io.github.nannank0
 source.dir = webui
 source.include_exts = py,png,jpg,ttf
 
-version = 1.1.0
+# Release version. The git tag is what actually names a release; this value is meant to
+# match it. Note that it does NOT currently reach the APK: p4a bakes versionName into the
+# generated Android project at `create` time, so the artifact still reports 1.0.0. That is
+# a cosmetic, known issue - see ANDROID.md.
+version = 1.4.0
 
 # THE KEY SETTING: no Kivy.
 #

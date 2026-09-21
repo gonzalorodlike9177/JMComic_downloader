@@ -9,9 +9,9 @@ buildozer 只能在 Linux / macOS 上运行；Windows 请用 WSL2 或 GitHub Act
 
 ### GitHub Actions（最省事）
 
-推一个 tag（`git tag v1.3.9 && git push origin v1.3.9`），或在仓库页面
-**Actions → android → Run workflow**。APK 会自动挂到 Release，也可以在 run 页面下载
-artifact `jmcomic-apk`。
+在仓库页面 **Actions → android → Run workflow**。APK 会自动挂到 Release，也可以在 run 页面下载 artifact `jmcomic-apk`。
+
+哦对了你直接去Release下载也可以的
 
 CI 缓存了 `~/.buildozer` 和 `.buildozer`，第二次起只要几分钟；改动 `buildozer.spec`
 或 `recipes/` 会让项目缓存失效，那一轮是冷构建（约 20 分钟）。
@@ -42,36 +42,11 @@ APK 是 debug 签名，可直接 `adb install -r bin/*.apk`。若报
 > 在 `tools/bin/sdkmanager` 建软链，然后删掉 `.buildozer/state.db` 重跑
 > （CI 里就是这么做的）。需要 **JDK 17**。
 
-## 配置要点
-
-| 配置 | 值 | 说明 |
-| --- | --- | --- |
-| `p4a.bootstrap` | `webview` | 用 WebView 承载界面，因此不需要 Kivy |
-| `android.api` / `minapi` | 34 / 24 | targetSdk 34，minSdk 24 |
-| `android.archs` | `arm64-v8a, armeabi-v7a` | |
-| `source.dir` | `webui` | 构建前由 `gui/build_android.py prepare` 暂存引擎 |
-| `p4a.local_recipes` | `recipes` | 只含 `recipes/jmcomic/` |
-| `p4a.branch` | `develop` | buildozer 跑的是它自己 git clone 的 p4a，升级 pip 里那个没用 |
-
-`requirements` 里有三条不是随便写的：
-
-- **`libwebp`** —— JM 的图片是 `.webp`，而 Pillow 只有在 p4a 构建顺序里含 `libwebp` 时才会
-  编译 WebP 编解码器。缺了它，所有图片都会「下载成功但解码失败」。
-  `gui/verify_apk.py` 在 CI 上直接读 APK 断言这一点，`tests/test_android_requirements.py`
-  也会在它被删掉时报错。
-- **`jmcomic` 走 `recipes/jmcomic/`** —— 上游的 PyPI 元数据硬依赖 `curl-cffi`，而 p4a 没有
-  它的 recipe。该 recipe 用 `--no-deps` 安装 jmcomic，依赖由我们自己列全。
-- **没有 `pyyaml`** —— 它是 C 扩展、没有 android wheel，会让 p4a 的依赖解析直接失败；
-  jmcomic 只在惰性路径上用到 YAML，Android 端不会走到。
-
-`curl_cffi` 在 Android 上不存在，`scripts/jmcore.py` 会注册一个桩模块满足
-`import jmcomic`，并自动把 HTTP 后端切成 `requests`。
-
 ## 下载的文件在哪里
 
 默认保存到应用的外部目录：
 
-```
+```txt
 手机存储/Android/data/io.github.nannank0.jmcomicdownloader/files/downloads/
 ```
 
@@ -92,12 +67,11 @@ APK 是 debug 签名，可直接 `adb install -r bin/*.apk`。若报
 
 启动时 logcat 会打印这些行，贴出来基本就能定位问题：
 
-```
+```txt
 [jmcomic] main.py starting
 [jmcomic] android=True backend=requests
 [jmcomic] Pillow 11.3.0 webp=yes jpg=yes ...
 [jmcomic] storage probe: /storage/emulated/0/Android/data/.../files/downloads (via ...) - browsable
 ```
 
-> 已知的显示问题：APK 文件名和 `versionName` 里的版本号一直是 `1.0.0`（`buildozer.spec`
-> 里写的是另一个值）。只影响显示，不影响功能。
+> 已知的显示问题：APK 文件名和 `versionName` 里的版本号一直是 `1.0.0`（`buildozer.spec` 里写的是另一个值）。只影响显示，不影响功能。

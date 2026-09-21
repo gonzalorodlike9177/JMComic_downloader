@@ -21,10 +21,6 @@ jobs:
     runs-on: ubuntu-22.04
     timeout-minutes: 90
 
-    env:
-      # Keep this in sync with the app version.
-      APP_VERSION: '1.0.0'
-
     steps:
       - uses: actions/checkout@v4
 
@@ -77,11 +73,8 @@ jobs:
       # buildozer.spec is undesirable, and the `-v2` suffix also forces one clean build
       # after the key scheme changed.
       #
-      # NOTE: this is NOT the cause of the versionName discrepancy. An earlier comment
-      # here claimed cache poisoning made `p4a create` skip regeneration, but a clean
-      # build with a brand-new key still shipped versionName 1.0.0 while
-      # `buildozer.spec` says 1.1.0 - see ANDROID.md for the open issue and what IS
-      # verified (the app source in the APK is current).
+      # Note: changing buildozer.spec or recipes/ recompiles every recipe (a cold build,
+      # ~20 min) instead of reusing the cached dist.
       - name: Cache buildozer project directory
         uses: actions/cache@v4
         with:
