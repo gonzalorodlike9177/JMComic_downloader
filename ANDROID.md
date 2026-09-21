@@ -74,4 +74,6 @@ APK 是 debug 签名，可直接 `adb install -r bin/*.apk`。若报
 [jmcomic] storage probe: /storage/emulated/0/Android/data/.../files/downloads (via ...) - browsable
 ```
 
-> 已知的显示问题：APK 文件名和 `versionName` 里的版本号一直是 `1.0.0`（`buildozer.spec` 里写的是另一个值）。只影响显示，不影响功能。
+> 版本号：APK 文件名和 `versionName` 都取自 `buildozer.spec` 里的 `version`，发布时把它改成和
+> git tag 一致的值（v1.4.0 实测：文件名是 `jmcomicdownloader-1.4.0-...apk`，manifest 里
+> `versionName` 也是 `1.4.0`）。注意改这个文件会让 CI 的项目缓存失效，那一轮是冷构建（约 20 分钟）。

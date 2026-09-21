@@ -19,10 +19,11 @@ package.domain = io.github.nannank0
 source.dir = webui
 source.include_exts = py,png,jpg,ttf
 
-# Release version. The git tag is what actually names a release; this value is meant to
-# match it. Note that it does NOT currently reach the APK: p4a bakes versionName into the
-# generated Android project at `create` time, so the artifact still reports 1.0.0. That is
-# a cosmetic, known issue - see ANDROID.md.
+# Release version. It reaches two user-visible places: the APK file name
+# (jmcomicdownloader-<version>-<archs>-<buildtype>.apk) and android:versionName in the
+# generated manifest - so keep it equal to the git tag being released. Changing this file
+# (or anything under recipes/) changes the CI cache key, which makes the next Android
+# build recompile every recipe (~20 min) instead of reusing the cached dist.
 version = 1.4.0
 
 # THE KEY SETTING: no Kivy.
